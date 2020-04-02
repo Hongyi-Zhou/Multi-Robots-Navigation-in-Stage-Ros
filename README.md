@@ -21,7 +21,7 @@ The stage_ros package in this repo has the modified/ working stageros package. <
 
 ## Build
 	mkdir -p catkin_ws/src
-	git clone 
+	git clone https://github.com/Hongyi-Zhou/Multi-Robots-Navigation-in-Stage-Ros.git
 	cd catkin_ws
 	catkin_make
 	source devel/setup.bash
@@ -33,7 +33,7 @@ The stage_ros package in this repo has the modified/ working stageros package. <
 
 ## How to send goal
 	
-	python goal_organizer.py 
+	python patrol_organizer.py 
 
 or
 	

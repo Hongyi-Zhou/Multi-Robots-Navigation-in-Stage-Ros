@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Map1
       Splitter Ratio: 0.49889135360717773
     Tree Height: 654
   - Class: rviz/Selection
@@ -43,99 +42,19 @@ Visualization Manager:
       Use Timestamp: false
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        map:
-          Value: true
-        robot_0/base_footprint:
-          Value: true
-        robot_0/base_laser_link:
-          Value: true
-        robot_0/base_link:
-          Value: true
-        robot_0/odom:
-          Value: true
-        robot_1/base_footprint:
-          Value: true
-        robot_1/base_laser_link:
-          Value: true
-        robot_1/base_link:
-          Value: true
-        robot_1/odom:
-          Value: true
-        robot_2/base_footprint:
-          Value: true
-        robot_2/base_laser_link:
-          Value: true
-        robot_2/base_link:
-          Value: true
-        robot_2/odom:
-          Value: true
-        robot_3/base_footprint:
-          Value: true
-        robot_3/base_laser_link:
-          Value: true
-        robot_3/base_link:
-          Value: true
-        robot_3/odom:
-          Value: true
-        robot_4/base_footprint:
-          Value: true
-        robot_4/base_laser_link:
-          Value: true
-        robot_4/base_link:
-          Value: true
-        robot_4/odom:
-          Value: true
-        robot_5/base_footprint:
-          Value: true
-        robot_5/base_laser_link:
-          Value: true
-        robot_5/base_link:
-          Value: true
-        robot_5/odom:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          robot_0/odom:
-            robot_0/base_footprint:
-              robot_0/base_link:
-                robot_0/base_laser_link:
-                  {}
-          robot_1/odom:
-            robot_1/base_footprint:
-              robot_1/base_link:
-                robot_1/base_laser_link:
-                  {}
-          robot_2/odom:
-            robot_2/base_footprint:
-              robot_2/base_link:
-                robot_2/base_laser_link:
-                  {}
-          robot_3/odom:
-            robot_3/base_footprint:
-              robot_3/base_link:
-                robot_3/base_laser_link:
-                  {}
-          robot_4/odom:
-            robot_4/base_footprint:
-              robot_4/base_link:
-                robot_4/base_laser_link:
-                  {}
-          robot_5/odom:
-            robot_5/base_footprint:
-              robot_5/base_link:
-                robot_5/base_laser_link:
-                  {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
@@ -203,14 +122,6 @@ Visualization Manager:
       Name: "Robot 0: Unknown Space"
       Topic: /robot_0/move_base_node/local_costmap/unknown_space
       Value: false
-    - Alpha: 1
-      Class: rviz/Polygon
-      Color: 255; 0; 0
-      Enabled: true
-      Name: "Robot 0: Robot Footprint"
-      Topic: /robot_0/move_base_node/global_costmap/footprint
-      Unreliable: false
-      Value: true
     - Alpha: 0.5
       Class: rviz/Map
       Color Scheme: costmap
@@ -225,12 +136,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: "Robot 0: Local Costmap"
       Topic: /robot_0/move_base_node/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -328,14 +239,6 @@ Visualization Manager:
       Name: "Robot 1: Unknown Space"
       Topic: /robot_1/move_base_node/local_costmap/unknown_space
       Value: false
-    - Alpha: 1
-      Class: rviz/Polygon
-      Color: 170; 0; 255
-      Enabled: true
-      Name: "Robot 1: Robot Footprint"
-      Topic: /robot_1/move_base_node/global_costmap/footprint
-      Unreliable: false
-      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: costmap
@@ -386,6 +289,54 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 170; 0; 255
+      Enabled: true
+      Name: "Robot 1: Robot Footprint"
+      Topic: /robot_1/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 255; 0; 0
+      Enabled: true
+      Name: "Robot 0: Robot Footprint"
+      Topic: /robot_0/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 170; 0; 255
+      Enabled: true
+      Name: "Robot 2: Robot Footprint"
+      Topic: /robot_2/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 170; 0; 255
+      Enabled: true
+      Name: "Robot 3: Robot Footprint"
+      Topic: /robot_3/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 170; 0; 255
+      Enabled: true
+      Name: "Robot 4: Robot Footprint"
+      Topic: /robot_4/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 170; 0; 255
+      Enabled: true
+      Name: "Robot 5: Robot Footprint"
+      Topic: /robot_5/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -414,25 +365,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 69.59768676757812
+      Distance: 71.64411926269531
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 17.09581756591797
-        Y: 17.114530563354492
-        Z: -30.17719268798828
+        X: 15.923404693603516
+        Y: 16.189294815063477
+        Z: -30.178112030029297
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5647963285446167
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.687214374542236
+      Yaw: 4.712214469909668
     Saved: ~
 Window Geometry:
   Displays:
@@ -450,5 +401,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 67
-  Y: 27
+  X: 0
+  Y: 0
