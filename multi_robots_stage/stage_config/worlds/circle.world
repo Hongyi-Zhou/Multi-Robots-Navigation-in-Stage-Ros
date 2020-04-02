@@ -23,7 +23,6 @@ define sicklaser ranger
   )
 )
 
-
 define floorplan model
 (
   color "gray30"
@@ -92,7 +91,7 @@ define agent position
   color "random"
   drive "omni"		 	# Differential steering model.
   obstacle_return 1           	# Can hit things.
-  ranger_return 0.5            	# reflects sonar beams
+  ranger_return 7           	# reflects sonar beams
   blob_return 1               	# Seen by blobfinders  
   fiducial_return 1           	# Seen as "1" fiducial finders
   sicklaser(

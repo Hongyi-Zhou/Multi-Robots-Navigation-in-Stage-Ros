@@ -9,7 +9,7 @@ transform_tolerance: 0.5
 #Obstacle marking parameters
 obstacle_range: 5
 max_obstacle_height: 2.0
-raytrace_range: 5
+raytrace_range: 5.5
 
 #The footprint of the robot and associated padding
 footprint: [[-0.2, -0.2], [-0.2, 0.2], [0.2, 0.2], [0.2, -0.2]]
@@ -21,4 +21,5 @@ inflation_radius: 0.6
 #Configuration for the sensors that the costmap will use to update a map
 observation_sources: base_scan
 base_scan: {data_type: LaserScan, expected_update_rate: 0.4, topic: base_scan,
-  observation_persistence: 0.0, marking: true, clearing: true, max_obstacle_height: 0.4, min_obstacle_height: 0.08}
+  observation_persistence: 0.0, marking: true, clearing: true, max_obstacle_height: 0.4,
+  min_obstacle_height: 0.08, inf_is_valid: true}

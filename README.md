@@ -41,5 +41,16 @@ or
 
 	rostopic pub /robot_0/move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: "/map"}, pose: {position: {x: 18.0, y: 19.0, z: 0.0}, orientation: {w: 1.0}}}'
 
+## Result
+
 You should see 6 robots start moving to the position of the opposite robot.<br>
 You can also tune the local planner to avoid collision more effectively.
+
+## Some notes during the work
+### Costmap 2d
+Stage laser return maxRange when not detecting a obstacle <br>
+https://answers.ros.org/question/190170/local-cost-map-not-updated/ <br>
+https://groups.google.com/forum/#!topic/ros-by-example/HNQBI9NUHcI <br>
+solution: when not detecting a obstacle range = maxRanfe-0.01
+
+

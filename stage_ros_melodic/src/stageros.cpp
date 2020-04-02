@@ -504,6 +504,10 @@ StageNode::WorldCallback()
                 {
                     msg.ranges[i] = sensor.ranges[i];
                     msg.intensities[i] = (uint8_t)sensor.intensities[i];
+                    /*----------------------change start------------------------------*/
+                    if (msg.ranges[i] == msg.range_max)
+                        msg.ranges[i] = msg.range_max-0.01;
+                    /*----------------------change end------------------------------*/
                 }
 
                 if (robotmodel->lasermodels.size() > 1)
