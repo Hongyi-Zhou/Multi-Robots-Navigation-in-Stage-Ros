@@ -1,8 +1,8 @@
 # multi_robots_stage
 
-a demo of multi robot navigation simulation using stage ros, and move_base in navigation stack <br>
+Demo of multi robot navigation simulation using stage ros, and move_base in navigation stack <br>
 <br>
-required package: modified stage_ros
+Required package: modified stage_ros
 
 ## Note
 As mentioned in https://github.com/ros-simulation/stage_ros/pull/40.
@@ -36,6 +36,7 @@ The stage_ros package in this repo has the modified/ working stageros package. <
 	python goal_organizer.py 
 
 or
+	
 	rostopic pub /robot_1/move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: "/map"}, pose: {position: {x: 20.0, y: 20.0, z: 0.0}, orientation: {w: 1.0}}}'
 
 	rostopic pub /robot_0/move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: "/map"}, pose: {position: {x: 18.0, y: 19.0, z: 0.0}, orientation: {w: 1.0}}}'
