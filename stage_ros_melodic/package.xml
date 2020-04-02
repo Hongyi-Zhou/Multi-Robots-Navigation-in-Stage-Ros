@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
-  <name>stage_ros</name>
-  <version>1.8.0</version>
+  <name>stage_ros_add_pose_and_crash</name>
+  <version>1.7.5</version>
   <description>This package provides ROS specific hooks for stage</description>
 
   <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
@@ -36,4 +36,6 @@
   <run_depend>std_msgs</run_depend>
   <run_depend>std_srvs</run_depend>
   <run_depend>tf</run_depend>
+
+  <test_depend>rospy</test_depend>
 </package>

@@ -4,7 +4,7 @@
 
   <node name="map_server" pkg="map_server" type="map_server" args="$(find multi_robots_stage)/stage_config/maps/willow-full.pgm 0.1" respawn="false" />
   
-  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find multi_robots_stage)/stage_config/worlds/willow-pr2.world" respawn="false" >
+  <node pkg="stage_ros_add_pose_and_crash" type="stageros" name="stageros" args="$(find multi_robots_stage)/stage_config/worlds/willow-pr2.world" respawn="false" >
     <param name="base_watchdog_timeout" value="0.2"/>
   </node>
 

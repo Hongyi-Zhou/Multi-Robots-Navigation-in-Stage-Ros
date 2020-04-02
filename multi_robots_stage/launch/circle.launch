@@ -3,22 +3,24 @@
   <param name="/use_sim_time" value="true"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(find multi_robots_stage)/stage_config/maps/rink.pgm 0.04" respawn="false" />
 
-  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find multi_robots_stage)/stage_config/worlds/circle.world" respawn="false">
+  <node pkg="stage_ros_add_pose_and_crash" type="stageros" name="stageros" args="$(find multi_robots_stage)/stage_config/worlds/circle.world" respawn="false">
     <param name="base_watchdog_timeout" value="0.2"/>
   </node>
 
   <!-- BEGIN ROBOT 0 -->
   <group ns="robot_0">
-
    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
       <remap from="map" to="/map" />
-      <!--remap from="cmd_vel" to="/robot_0/cmd_vel" /-->
-      <param name="controller_frequency" value="10.0" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/move_base_params.yaml" command="load" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/base_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/dwa_local_planner_params.yaml" command="load" />
+
+      <param name="global_costmap/robot_base_frame" value="robot_0/base_link"/>
+      <param name="local_costmap/global_frame" value="robot_0/odom"/>
+      <param name="local_costmap/robot_base_frame" value="robot_0/base_link"/>
     </node> 
 
     <node pkg="fake_localization" type="fake_localization" name="fake_localization" respawn="false" output="screen">
@@ -38,13 +40,12 @@
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
       <remap from="map" to="/map" />
-      <!--remap from="cmd_vel" to="/robot_0/cmd_vel" /-->
-      <param name="controller_frequency" value="10.0" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/move_base_params.yaml" command="load" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/base_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/dwa_local_planner_params.yaml" command="load" />
 
       <param name="global_costmap/robot_base_frame" value="robot_1/base_link"/>
       <param name="local_costmap/global_frame" value="robot_1/odom"/>
@@ -69,13 +70,12 @@
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
       <remap from="map" to="/map" />
-      <!--remap from="cmd_vel" to="/robot_0/cmd_vel" /-->
-      <param name="controller_frequency" value="10.0" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/move_base_params.yaml" command="load" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/base_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/dwa_local_planner_params.yaml" command="load" />
 
       <param name="global_costmap/robot_base_frame" value="robot_2/base_link"/>
       <param name="local_costmap/global_frame" value="robot_2/odom"/>
@@ -100,13 +100,12 @@
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
       <remap from="map" to="/map" />
-      <!--remap from="cmd_vel" to="/robot_0/cmd_vel" /-->
-      <param name="controller_frequency" value="10.0" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/move_base_params.yaml" command="load" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/base_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/dwa_local_planner_params.yaml" command="load" />
 
       <param name="global_costmap/robot_base_frame" value="robot_3/base_link"/>
       <param name="local_costmap/global_frame" value="robot_3/odom"/>
@@ -131,13 +130,12 @@
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
       <remap from="map" to="/map" />
-      <!--remap from="cmd_vel" to="/robot_0/cmd_vel" /-->
-      <param name="controller_frequency" value="10.0" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/move_base_params.yaml" command="load" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/base_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/dwa_local_planner_params.yaml" command="load" />
 
       <param name="global_costmap/robot_base_frame" value="robot_4/base_link"/>
       <param name="local_costmap/global_frame" value="robot_4/odom"/>
@@ -162,13 +160,12 @@
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
       <remap from="map" to="/map" />
-      <!--remap from="cmd_vel" to="/robot_0/cmd_vel" /-->
-      <param name="controller_frequency" value="10.0" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/move_base_params.yaml" command="load" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find multi_robots_stage)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params1.yaml" command="load" />
-      <rosparam file="$(find multi_robots_stage)/move_base_config/base_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find multi_robots_stage)/move_base_config/dwa_local_planner_params.yaml" command="load" />
 
       <param name="global_costmap/robot_base_frame" value="robot_5/base_link"/>
       <param name="local_costmap/global_frame" value="robot_5/odom"/>

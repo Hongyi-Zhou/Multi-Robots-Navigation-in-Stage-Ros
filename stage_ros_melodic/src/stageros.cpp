@@ -16,7 +16,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 /**
 
 @mainpage
@@ -37,7 +36,6 @@
 // libstage
 #include <stage.hh>
 
-
 // roscpp
 #include <ros/ros.h>
 #include <boost/thread/mutex.hpp>
@@ -48,8 +46,12 @@
 #include <sensor_msgs/CameraInfo.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Int8.h>
 #include <rosgraph_msgs/Clock.h>
 
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "tf/LinearMath/Transform.h"
 #include <std_srvs/Empty.h>
 
 #include "tf/transform_broadcaster.h"
@@ -62,6 +64,9 @@
 #define BASE_SCAN "base_scan"
 #define BASE_POSE_GROUND_TRUTH "base_pose_ground_truth"
 #define CMD_VEL "cmd_vel"
+#define POSE "cmd_pose"
+#define POSESTAMPED "cmd_pose_stamped"
+#define IS_CRASHED "is_crashed"
 
 // Our node
 class StageNode
@@ -90,6 +95,7 @@ private:
         //ros publishers
         ros::Publisher odom_pub; //one odom
         ros::Publisher ground_truth_pub; //one ground truth
+        ros::Publisher stall_pub;
 
         std::vector<ros::Publisher> image_pubs; //multiple images
         std::vector<ros::Publisher> depth_pubs; //multiple depths
@@ -97,6 +103,8 @@ private:
         std::vector<ros::Publisher> laser_pubs; //multiple lasers
 
         ros::Subscriber cmdvel_sub; //one cmd_vel subscriber
+        ros::Subscriber pose_sub;
+        ros::Subscriber posestamped_sub;
     };
 
     std::vector<StageRobot const *> robotmodels_;
@@ -104,9 +112,9 @@ private:
     // Used to remember initial poses for soft reset
     std::vector<Stg::Pose> initial_poses;
     ros::ServiceServer reset_srv_;
-  
+
     ros::Publisher clock_pub_;
-    
+
     bool isDepthCanonical;
     bool use_model_names;
 
@@ -135,7 +143,7 @@ private:
 
     // Current simulation time
     ros::Time sim_time;
-    
+
     // Last time we saved global position (for velocity calculation).
     ros::Time base_last_globalpos_time;
     // Last published global pose of each robot
@@ -154,13 +162,20 @@ public:
 
     // Our callback
     void WorldCallback();
-    
+
     // Do one update of the world.  May pause if the next update time
     // has not yet arrived.
     bool UpdateWorld();
 
-    // Message callback for a MsgBaseVel message, which set velocities.
+    // Message callback for a cmd_vel message, which set velocities.
     void cmdvelReceived(int idx, const boost::shared_ptr<geometry_msgs::Twist const>& msg);
+
+    // Message callback for a cmd_pose message, which sets positions.
+    void poseReceived(int idx, const boost::shared_ptr<geometry_msgs::Pose const>& msg);
+
+    // Message callback for a cmd_pose_stamped message, which sets positions
+    // with a timestamp (e.g., from rviz).
+    void poseStampedReceived(int idx, const boost::shared_ptr<geometry_msgs::PoseStamped const>& msg);
 
     // Service callback for soft reset
     bool cb_reset_srv(std_srvs::Empty::Request& request, std_srvs::Empty::Response& response);
@@ -229,23 +244,17 @@ StageNode::mapName(const char *name, size_t robotID, size_t deviceID, Stg::Model
 void
 StageNode::ghfunc(Stg::Model* mod, StageNode* node)
 {
-  //printf( "inspecting %s, parent\n", mod->Token() );
-
-  if (dynamic_cast<Stg::ModelRanger *>(mod)) {
-     node->lasermodels.push_back(dynamic_cast<Stg::ModelRanger *>(mod));
-  }
-  if (dynamic_cast<Stg::ModelPosition *>(mod)) {
-     Stg::ModelPosition * p = dynamic_cast<Stg::ModelPosition *>(mod);
+    if (dynamic_cast<Stg::ModelRanger *>(mod))
+        node->lasermodels.push_back(dynamic_cast<Stg::ModelRanger *>(mod));
+    if (dynamic_cast<Stg::ModelPosition *>(mod)) {
+      Stg::ModelPosition * p = dynamic_cast<Stg::ModelPosition *>(mod);
       // remember initial poses
       node->positionmodels.push_back(p);
       node->initial_poses.push_back(p->GetGlobalPose());
     }
-  if (dynamic_cast<Stg::ModelCamera *>(mod)) {
-     node->cameramodels.push_back(dynamic_cast<Stg::ModelCamera *>(mod));
-  }
+    if (dynamic_cast<Stg::ModelCamera *>(mod))
+        node->cameramodels.push_back(dynamic_cast<Stg::ModelCamera *>(mod));
 }
-
-
 
 
 bool
@@ -260,7 +269,6 @@ StageNode::cb_reset_srv(std_srvs::Empty::Request& request, std_srvs::Empty::Resp
 }
 
 
-
 void
 StageNode::cmdvelReceived(int idx, const boost::shared_ptr<geometry_msgs::Twist const>& msg)
 {
@@ -269,6 +277,35 @@ StageNode::cmdvelReceived(int idx, const boost::shared_ptr<geometry_msgs::Twist 
                                         msg->linear.y,
                                         msg->angular.z);
     this->base_last_cmd = this->sim_time;
+}
+
+void
+StageNode::poseReceived(int idx, const boost::shared_ptr<geometry_msgs::Pose const>& msg)
+{
+    boost::mutex::scoped_lock lock(msg_lock);
+    Stg::Pose pose;
+
+    double roll, pitch, yaw;
+    tf::Matrix3x3 m(tf::Quaternion(msg->orientation.x,msg->orientation.y,msg->orientation.z,msg->orientation.w));
+    m.getRPY(roll, pitch, yaw);
+    pose.x = msg->position.x;
+    pose.y = msg->position.y;
+    pose.z = 0;
+    pose.a = yaw;
+    this->positionmodels[idx]->SetPose(pose);
+}
+
+void
+StageNode::poseStampedReceived(int idx, const boost::shared_ptr<geometry_msgs::PoseStamped const>& msg)
+{
+    // Create a shared pointer to the raw pose and pass it through.
+    // Note that we ignore the header because we're not supporting setting of
+    // poses in an arbitrary frame. Every pose is interpreted to be in Stage's
+    // world frame (which isn't represented anywhere as a tf frame).
+    geometry_msgs::Pose* pose = new geometry_msgs::Pose;
+    *pose = msg->pose;
+    boost::shared_ptr<geometry_msgs::Pose const> pose_ptr(pose);
+    this->poseReceived(idx, pose_ptr);
 }
 
 StageNode::StageNode(int argc, char** argv, bool gui, const char* fname, bool use_model_names)
@@ -284,6 +321,7 @@ StageNode::StageNode(int argc, char** argv, bool gui, const char* fname, bool us
 
     if(!localn.getParam("is_depth_canonical", isDepthCanonical))
         isDepthCanonical = true;
+
 
     // We'll check the existence of the world file, because libstage doesn't
     // expose its failure to open it.  Could go further with checks (e.g., is
@@ -303,13 +341,16 @@ StageNode::StageNode(int argc, char** argv, bool gui, const char* fname, bool us
     else
         this->world = new Stg::World();
 
+    // Apparently an Update is needed before the Load to avoid crashes on
+    // startup on some systems.
+    // As of Stage 4.1.1, this update call causes a hang on start.
+    //this->UpdateWorld();
     this->world->Load(fname);
 
-    // todo: reverse the order of these next lines? try it .
-
+    // We add our callback here, after the Update, so avoid our callback
+    // being invoked before we're ready.
     this->world->AddUpdateCallback((Stg::world_callback_t)s_update, this);
 
-    // inspect every model to locate the things we care about
     this->world->ForEachDescendant((Stg::model_callback_t)ghfunc, this);
 }
 
@@ -331,15 +372,13 @@ StageNode::SubscribeModels()
         new_robot->positionmodel = this->positionmodels[r];
         new_robot->positionmodel->Subscribe();
 
-	ROS_INFO( "Subscribed to Stage position model \"%s\"", this->positionmodels[r]->Token() ); 
-		      
+
         for (size_t s = 0; s < this->lasermodels.size(); s++)
         {
-	  if (this->lasermodels[s] and this->lasermodels[s]->Parent() == new_robot->positionmodel)
+            if (this->lasermodels[s] and this->lasermodels[s]->Parent() == new_robot->positionmodel)
             {
                 new_robot->lasermodels.push_back(this->lasermodels[s]);
                 this->lasermodels[s]->Subscribe();
-	      ROS_INFO( "subscribed to Stage ranger \"%s\"", this->lasermodels[s]->Token() ); 
             }
         }
 
@@ -349,20 +388,18 @@ StageNode::SubscribeModels()
             {
                 new_robot->cameramodels.push_back(this->cameramodels[s]);
                 this->cameramodels[s]->Subscribe();
-
-		ROS_INFO( "subscribed to Stage camera model \"%s\"", this->cameramodels[s]->Token() ); 
             }
         }
 
-	// TODO - print the topic names nicely as well
-        ROS_INFO("Robot %s provided %lu rangers and %lu cameras",
-		 new_robot->positionmodel->Token(),
-		 new_robot->lasermodels.size(),
-		 new_robot->cameramodels.size() );
+        ROS_INFO("Found %lu laser devices and %lu cameras in robot %lu", new_robot->lasermodels.size(), new_robot->cameramodels.size(), r);
 
         new_robot->odom_pub = n_.advertise<nav_msgs::Odometry>(mapName(ODOM, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10);
+        new_robot->stall_pub = n_.advertise<std_msgs::Int8>(mapName(IS_CRASHED, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10);
         new_robot->ground_truth_pub = n_.advertise<nav_msgs::Odometry>(mapName(BASE_POSE_GROUND_TRUTH, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10);
         new_robot->cmdvel_sub = n_.subscribe<geometry_msgs::Twist>(mapName(CMD_VEL, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10, boost::bind(&StageNode::cmdvelReceived, this, r, _1));
+        new_robot->pose_sub = n_.subscribe<geometry_msgs::Pose>(mapName(POSE, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10, boost::bind(&StageNode::poseReceived, this, r, _1));
+
+        new_robot->posestamped_sub = n_.subscribe<geometry_msgs::PoseStamped>(mapName(POSESTAMPED, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10, boost::bind(&StageNode::poseStampedReceived, this, r, _1));
 
         for (size_t s = 0;  s < new_robot->lasermodels.size(); ++s)
         {
@@ -414,12 +451,6 @@ StageNode::UpdateWorld()
 void
 StageNode::WorldCallback()
 {
-  if( ! ros::ok() ) {
-    ROS_INFO( "ros::ok() is false. Quitting." );
-    this->world->QuitAll();
-    return;
-  }
-  
     boost::mutex::scoped_lock lock(msg_lock);
 
     this->sim_time.fromSec(world->SimTimeNow() / 1e6);
@@ -472,7 +503,7 @@ StageNode::WorldCallback()
                 for(unsigned int i = 0; i < sensor.ranges.size(); i++)
                 {
                     msg.ranges[i] = sensor.ranges[i];
-                    msg.intensities[i] = sensor.intensities[i];
+                    msg.intensities[i] = (uint8_t)sensor.intensities[i];
                 }
 
                 if (robotmodel->lasermodels.size() > 1)
@@ -525,6 +556,12 @@ StageNode::WorldCallback()
         odom_msg.header.stamp = sim_time;
 
         robotmodel->odom_pub.publish(odom_msg);
+        
+        //Publish stall on separate topic
+        //ROS_INFO("Stalled status: %d", robotmodel->positionmodel->Stalled());
+        std_msgs::Int8 stall_status;
+        stall_status.data = robotmodel->positionmodel->Stalled();
+        robotmodel->stall_pub.publish(stall_status);
 
         // broadcast odometry transform
         tf::Quaternion odomQ;
@@ -748,7 +785,7 @@ StageNode::WorldCallback()
 
 int 
 main(int argc, char** argv)
-{
+{ 
     if( argc < 2 )
     {
         puts(USAGE);
@@ -774,12 +811,23 @@ main(int argc, char** argv)
 
     boost::thread t = boost::thread(boost::bind(&ros::spin));
 
+    // New in Stage 4.1.1: must Start() the world.
     sn.world->Start();
 
-    Stg::World::Run();
-    
+    // TODO: get rid of this fixed-duration sleep, using some Stage builtin
+    // PauseUntilNextUpdate() functionality.
+    ros::WallRate r(10.0);
+    while(ros::ok() && !sn.world->TestQuit())
+    {
+        if(gui)
+            Fl::wait(r.expectedCycleTime().toSec());
+        else
+        {
+            sn.UpdateWorld();
+            r.sleep();
+        }
+    }
     t.join();
 
     exit(0);
 }
-

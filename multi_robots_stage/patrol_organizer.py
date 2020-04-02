@@ -1,13 +1,17 @@
 import re
 import rospy
+from actionlib_msgs.msg import GoalStatusArray
 import random
+from geometry_msgs.msg import Pose2D, PoseStamped, Quaternion
+import pdb
+import argparse
 import numpy
 from tf.transformations import quaternion_from_euler
-from geometry_msgs.msg import Pose2D, PoseStamped, Quaternion
-from actionlib_msgs.msg import GoalStatusArray
 
-class Coordinator(object):
+class PatrolCoordinator(object):
+  
     def __init__(self):
+
         rospy.loginfo('coordinator initialization')
         availableRobots=['robot_0', 
                          'robot_1',
@@ -51,9 +55,13 @@ class Coordinator(object):
             self.robotPublishers[robotName] = rospy.Publisher(topic, PoseStamped, queue_size=10, latch=True)
             
     def askForNextLocation(self, msg=GoalStatusArray()):
+        # get the name of the node that is sending the message
         if (len(msg.status_list) != 0 and msg.status_list[-1].status == 3):
             callerid = msg._connection_header['callerid']
             robotName = callerid[1:-15]
+            #print (robotName)
+        # if msg.data == "failure":
+        #     rospy.logerr("failure by patrolling")
             self.sendDirection(robotName)
         
     
@@ -76,8 +84,11 @@ class Coordinator(object):
         pub.publish(p)
         self.nextPositionIndex[robot] = (self.nextPositionIndex[robot] + 1) % len(self.listOfPositions[robot])
 
-if __name__ == '__main__':
-    coordinator = Coordinator()
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--robot_to_control", default="robot_0", help="robot's name. should be unique in order to coordinate multiple robots. default: robot_0 ")
+    args, unknown = parser.parse_known_args()
+    coordinator = PatrolCoordinator()
     rospy.init_node('coordinator')
     coordinator.sendDirection('robot_0')
     coordinator.sendDirection('robot_1')
@@ -86,3 +97,6 @@ if __name__ == '__main__':
     coordinator.sendDirection('robot_4')
     coordinator.sendDirection('robot_5')
     rospy.spin()
+
+if __name__ == '__main__':
+    main()

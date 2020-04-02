@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1/Frames1
+        - /Map1
       Splitter Ratio: 0.49889135360717773
     Tree Height: 654
   - Class: rviz/Selection
@@ -32,7 +32,7 @@ Toolbars:
 Visualization Manager:
   Class: ""
   Displays:
-    - Alpha: 0.699999988079071
+    - Alpha: 0.800000011920929
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
@@ -42,11 +42,105 @@ Visualization Manager:
       Unreliable: false
       Use Timestamp: false
       Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        map:
+          Value: true
+        robot_0/base_footprint:
+          Value: true
+        robot_0/base_laser_link:
+          Value: true
+        robot_0/base_link:
+          Value: true
+        robot_0/odom:
+          Value: true
+        robot_1/base_footprint:
+          Value: true
+        robot_1/base_laser_link:
+          Value: true
+        robot_1/base_link:
+          Value: true
+        robot_1/odom:
+          Value: true
+        robot_2/base_footprint:
+          Value: true
+        robot_2/base_laser_link:
+          Value: true
+        robot_2/base_link:
+          Value: true
+        robot_2/odom:
+          Value: true
+        robot_3/base_footprint:
+          Value: true
+        robot_3/base_laser_link:
+          Value: true
+        robot_3/base_link:
+          Value: true
+        robot_3/odom:
+          Value: true
+        robot_4/base_footprint:
+          Value: true
+        robot_4/base_laser_link:
+          Value: true
+        robot_4/base_link:
+          Value: true
+        robot_4/odom:
+          Value: true
+        robot_5/base_footprint:
+          Value: true
+        robot_5/base_laser_link:
+          Value: true
+        robot_5/base_link:
+          Value: true
+        robot_5/odom:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        map:
+          robot_0/odom:
+            robot_0/base_footprint:
+              robot_0/base_link:
+                robot_0/base_laser_link:
+                  {}
+          robot_1/odom:
+            robot_1/base_footprint:
+              robot_1/base_link:
+                robot_1/base_laser_link:
+                  {}
+          robot_2/odom:
+            robot_2/base_footprint:
+              robot_2/base_link:
+                robot_2/base_laser_link:
+                  {}
+          robot_3/odom:
+            robot_3/base_footprint:
+              robot_3/base_link:
+                robot_3/base_laser_link:
+                  {}
+          robot_4/odom:
+            robot_4/base_footprint:
+              robot_4/base_link:
+                robot_4/base_laser_link:
+                  {}
+          robot_5/odom:
+            robot_5/base_footprint:
+              robot_5/base_link:
+                robot_5/base_laser_link:
+                  {}
+      Update Interval: 0
+      Value: true
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
       Color: 255; 149; 0
-      Enabled: false
+      Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
       Length: 0.30000001192092896
@@ -62,14 +156,14 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /robot_0/move_base_node/TrajectoryPlannerROS/global_plan
+      Topic: /robot_0/move_base_node/GlobalPlanner/plan
       Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
       Color: 0; 0; 255
-      Enabled: false
+      Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
       Length: 0.30000001192092896
@@ -85,76 +179,30 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /robot_0/move_base_node/TrajectoryPlannerROS/local_plan
+      Topic: /robot_0/move_base_node/DWAPlannerROS/local_plan
       Unreliable: false
-      Value: false
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 149; 0
-      Enabled: false
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: "Robot 1: Global Plan"
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /robot_1/move_base_node/TrajectoryPlannerROS/global_plan
-      Unreliable: false
-      Value: false
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 0; 0
-      Enabled: false
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: "Robot 0: NavFn Plan"
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /robot_0/move_base_node/NavfnROS/plan
-      Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/GridCells
       Color: 0; 0; 255
-      Enabled: true
+      Enabled: false
       Name: "Robot 0: Inflated Obstacles"
       Topic: /robot_0/move_base_node/local_costmap/inflated_obstacles
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/GridCells
       Color: 255; 0; 0
-      Enabled: true
+      Enabled: false
       Name: "Robot 0: Obstacles"
       Topic: /robot_0/move_base_node/local_costmap/obstacles
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/GridCells
       Color: 0; 255; 0
-      Enabled: true
+      Enabled: false
       Name: "Robot 0: Unknown Space"
       Topic: /robot_0/move_base_node/local_costmap/unknown_space
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/Polygon
       Color: 255; 0; 0
@@ -163,105 +211,16 @@ Visualization Manager:
       Topic: /robot_0/move_base_node/global_costmap/footprint
       Unreliable: false
       Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 0; 0; 255
-      Enabled: false
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: "Robot 1: Local Plan"
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /robot_1/move_base_node/TrajectoryPlannerROS/local_plan
-      Unreliable: false
-      Value: false
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 0; 0
-      Enabled: true
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: "Robot 1: NavFn Plan"
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /robot_1/move_base_node/NavfnROS/plan
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Class: rviz/GridCells
-      Color: 0; 0; 255
-      Enabled: true
-      Name: "Robot 1: Inflated Obstacles"
-      Topic: /robot_1/move_base_node/local_costmap/inflated_obstacles
-      Value: true
-    - Alpha: 1
-      Class: rviz/GridCells
-      Color: 255; 0; 0
-      Enabled: true
-      Name: "Robot 1: Obstacles"
-      Topic: /robot_1/move_base_node/local_costmap/obstacles
-      Value: true
-    - Alpha: 1
-      Class: rviz/GridCells
-      Color: 0; 255; 0
-      Enabled: true
-      Name: "Robot 1: Unknown Space"
-      Topic: /robot_1/move_base_node/local_costmap/unknown_space
-      Value: true
-    - Alpha: 1
-      Class: rviz/Polygon
-      Color: 170; 0; 255
-      Enabled: true
-      Name: "Robot 1: Robot Footprint"
-      Topic: /robot_1/move_base_node/global_costmap/footprint
-      Unreliable: false
-      Value: true
-    - Class: rviz/TF
-      Enabled: false
-      Frame Timeout: 15
-      Frames:
-        All Enabled: true
-      Marker Scale: 1
-      Name: TF
-      Show Arrows: true
-      Show Axes: true
-      Show Names: true
-      Tree:
-        {}
-      Update Interval: 0
-      Value: false
-    - Alpha: 0.699999988079071
+    - Alpha: 0.5
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: "Robot 0: Global Costmap"
       Topic: /robot_0/move_base_node/global_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: costmap
@@ -302,6 +261,81 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 0; 0; 255
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: "Robot 1: Local Plan"
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /robot_1/move_base_node/DWAPlannerROS/local_plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 255; 149; 0
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: "Robot 1: Global Plan"
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /robot_1/move_base_node/GlobalPlanner/plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Class: rviz/GridCells
+      Color: 0; 0; 255
+      Enabled: false
+      Name: "Robot 1: Inflated Obstacles"
+      Topic: /robot_1/move_base_node/local_costmap/inflated_obstacles
+      Value: false
+    - Alpha: 1
+      Class: rviz/GridCells
+      Color: 255; 0; 0
+      Enabled: false
+      Name: "Robot 1: Obstacles"
+      Topic: /robot_1/move_base_node/local_costmap/obstacles
+      Value: false
+    - Alpha: 1
+      Class: rviz/GridCells
+      Color: 0; 255; 0
+      Enabled: false
+      Name: "Robot 1: Unknown Space"
+      Topic: /robot_1/move_base_node/local_costmap/unknown_space
+      Value: false
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 170; 0; 255
+      Enabled: true
+      Name: "Robot 1: Robot Footprint"
+      Topic: /robot_1/move_base_node/global_costmap/footprint
+      Unreliable: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: costmap
@@ -316,12 +350,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: "Robot 1: Local Costmap"
       Topic: /robot_1/move_base_node/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -334,7 +368,7 @@ Visualization Manager:
       Color: 252; 233; 79
       Color Transformer: FlatColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 1
@@ -351,7 +385,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -380,25 +414,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 72.8201904296875
+      Distance: 69.59768676757812
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 16.330650329589844
-        Y: 15.687910079956055
-        Z: -30.178625106811523
+        X: 17.09581756591797
+        Y: 17.114530563354492
+        Z: -30.17719268798828
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.5647963285446167
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.712214469909668
+      Yaw: 4.687214374542236
     Saved: ~
 Window Geometry:
   Displays:
@@ -416,5 +450,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 0
-  Y: 0
+  X: 67
+  Y: 27
