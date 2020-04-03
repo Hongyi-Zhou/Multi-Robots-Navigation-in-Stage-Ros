@@ -58,7 +58,7 @@ window
   size [800 800]
   
 # Camera options 
-  scale 12
+  scale 20
   center [0  0]
   rotate [ 0.000  0.000 ]
 

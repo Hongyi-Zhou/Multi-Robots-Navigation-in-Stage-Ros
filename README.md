@@ -1,9 +1,8 @@
 # multi_robots_stage
-
 Demo of multi robot navigation simulation using stage ros, and move_base in navigation stack <br>
-<br>
 Required package: modified stage_ros
-
+<br>
+![Circle Demo](./asset/circle_demo_small.gif)
 ## Note
 As mentioned in https://github.com/ros-simulation/stage_ros/pull/40.
 
